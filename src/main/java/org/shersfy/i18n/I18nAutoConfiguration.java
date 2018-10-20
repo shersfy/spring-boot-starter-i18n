@@ -1,10 +1,10 @@
 package org.shersfy.i18n;
 
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Properties;
 
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,25 +17,25 @@ import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
 
 @Configuration
-@EnableConfigurationProperties(I18nProperties.class)
+@EnableConfigurationProperties(I18nConfigProperties.class)
 public class I18nAutoConfiguration {
 	
 	@Autowired
-	private I18nProperties config;
+	private I18nConfigProperties config;
 	
 	@Bean
-	@ConditionalOnProperty(prefix=I18nProperties.PREFIX, value="enabled", havingValue="true")
-	public I18nMessages i18nMessages() throws IOException {
+	@ConditionalOnProperty(prefix=I18nConfigProperties.PREFIX, value="enabled", havingValue="true")
+	public I18nMessages i18n() throws IOException {
 		ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
 		Resource[] arr = resolver.getResources(config.getLocation());
-		Map<String, Properties> map = new HashMap<>();
+		Map<String, I18nProperties> map = new HashMap<>();
 		for (Resource res :arr) {
 			String[] names = FilenameUtils.getBaseName(res.getFilename()).split("_");
 			if (names.length!=3) {
 				continue;
 			}
-			Properties prop = new Properties();
-			prop.load(res.getInputStream());
+			I18nProperties prop = new I18nProperties();
+			prop.load(new InputStreamReader(res.getInputStream(), "UTF8"));
 			res.getInputStream().close();
 			map.put(new Locale(names[1], names[2]).toString(), prop);
 		}

@@ -1,37 +1,40 @@
 package org.shersfy.i18n;
 
-import org.springframework.boot.context.properties.ConfigurationProperties;
+import java.util.Properties;
 
-@ConfigurationProperties(I18nProperties.PREFIX)
-public class I18nProperties {
-	
-	public static final String PREFIX ="i18n.config";
+public class I18nProperties extends Properties {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	@Override
+	public String getProperty(String key, String arg) {
+		String value = getProperty(key);
+		if(value!=null){
+			value = String.format(value, arg);
+		}
+		return value;
+	}
 	
 	/**
-	 * Default false.
-	 * Flag i18n is enabled
+	 * 带参数
+	 * 
+	 * @author PengYang
+	 * @date 2017-06-16
+	 * 
+	 * @param key
+	 * @param args
+	 * @return String
 	 */
-	private boolean enabled = false;
+	public String getProperty(String key, Object ... args) {
+		String value = getProperty(key);
+		if(value!=null){
+			value = String.format(value, args);
+		}
+		return value;
+	}
 	
-	/**
-	 * Default classpath:i18n/*.properties. 
-	 * messages_*.properties files location. 
-	 */
-	private String location = "classpath:i18n/*.properties";
 
-	public String getLocation() {
-		return location;
-	}
-
-	public void setLocation(String location) {
-		this.location = location;
-	}
-
-	public boolean isEnabled() {
-		return enabled;
-	}
-
-	public void setEnabled(boolean enabled) {
-		this.enabled = enabled;
-	}
 }
