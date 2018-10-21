@@ -18,6 +18,11 @@ public class I18nConfigProperties {
 	 * messages_*.properties files location. 
 	 */
 	private String location = "classpath:i18n/*.properties";
+	/**
+	 * Default "lang". 
+	 * Set request header language parameter. 
+	 */
+	private String headerKey = "lang";
 
 	public String getLocation() {
 		return location;
@@ -33,5 +38,13 @@ public class I18nConfigProperties {
 
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
+	}
+
+	public String getHeaderKey() {
+		return headerKey;
+	}
+
+	public void setHeaderKey(String headerKey) {
+		this.headerKey = headerKey;
 	}
 }

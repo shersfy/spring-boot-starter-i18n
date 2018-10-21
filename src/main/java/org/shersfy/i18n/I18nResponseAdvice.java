@@ -13,6 +13,9 @@ public abstract class I18nResponseAdvice implements ResponseBodyAdvice<Object>{
 
 	@Autowired
 	private I18nMessages i18n;
+	
+	@Autowired
+	private I18nConfigProperties config;
 
 	@Override
 	public boolean supports(MethodParameter returnType, 
@@ -31,7 +34,7 @@ public abstract class I18nResponseAdvice implements ResponseBodyAdvice<Object>{
 		Result res = (Result) body;
 		if(res.getModel() instanceof I18nModel) {
 			I18nModel model = (I18nModel) res.getModel();
-			String lang = request.getHeaders().getFirst("lang");
+			String lang = request.getHeaders().getFirst(config.getHeaderKey());
 			String msg  = i18n.getI18n(lang).getProperty(model.getKey(), model.getArgs());
 			res.setMsg(msg);
 		}
