@@ -7,7 +7,10 @@ import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 
 /**
- * 注入后即可使用
+ * 注入后即可使用<br>
+ * Example:<br>
+ * {@link @Autowired}<br>
+ * private I18nMessages i18n;
  *
  */
 public class I18nMessages {
