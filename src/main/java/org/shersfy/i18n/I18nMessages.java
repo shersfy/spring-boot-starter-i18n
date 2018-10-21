@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * 注入后即可使用
  *
@@ -23,9 +25,10 @@ public class I18nMessages {
 	
 	public I18nProperties getI18n(String language) {
 		Locale locale = Locale.CHINA;
-		if("en".equalsIgnoreCase(language)
-				|| "en_US".equalsIgnoreCase(language)) {
-			locale = Locale.US;
+		language = "en".equalsIgnoreCase(language)?"en_US":language;
+		if(StringUtils.contains(language, "_")) {
+			String[] names = language.split("_");
+			locale = new Locale(names[0], names[1]);
 		}
 		return getI18n(locale.getLanguage(), locale.getCountry());
 	}
